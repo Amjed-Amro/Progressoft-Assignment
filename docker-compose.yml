@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: fxdeals-DB
+    environment:
+      POSTGRES_DB: fxdeals
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "8080:5432"
+    networks:
+      - my-network
+  spring-app:
+    build: . # Build context is the current directory (where Dockerfile is)
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+    networks:
+      - my-network
+networks:
+  my-network:
+
